@@ -1,4 +1,4 @@
-package entity;
+package pl.sda.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -22,4 +22,7 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private Set<Outcome> outcomes;
 
+    public Category(String name) {
+        this.name = name;
+    }
 }

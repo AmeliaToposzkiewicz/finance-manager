@@ -1,4 +1,4 @@
-package service;
+package pl.sda.service;
 
 public class IncomeService {
 }
