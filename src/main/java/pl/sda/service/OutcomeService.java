@@ -35,4 +35,12 @@ public class OutcomeService {
                         outcome.getAmount() + ", " + outcome.getAddDate() + ", " + outcome.getComment(),
                         outcome.getCategory().getId())).toList();
     }
+
+    public void deleteOutcome(Long id) throws IllegalAccessException {
+        if (id != null) {
+            outcomeRepository.deleteById(id);
+        } else {
+            throw new IllegalAccessException("Input data is null");
+        }
+    }
 }
