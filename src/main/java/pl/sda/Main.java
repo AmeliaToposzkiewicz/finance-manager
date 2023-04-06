@@ -36,6 +36,7 @@ public class Main {
                 System.out.println("Type operation");
                 System.out.println("0 - Exit program");
                 System.out.println("1 - Add new category");
+                System.out.println("2 - Delete category");
                 int selectedOperation = SCANNER.nextInt();
                 SCANNER.nextLine();
                 switch (selectedOperation) {
@@ -51,9 +52,18 @@ public class Main {
                             System.err.println(e.getMessage());
                         }
                     }
+                    case 2 -> {
+                        System.out.println("Provide id of category to delete");
+                        Long id = SCANNER.nextLong();
+                        try {
+                            categoryService.deleteCategory(id);
+                        } catch (IllegalAccessException e) {
+                            System.err.println(e.getMessage());
+                        }
+                    }
                 }
-            }
 
+            }
         }
     }
 }

@@ -19,4 +19,12 @@ public class CategoryService {
             throw new IllegalAccessException("Some input data are null or empty");
         }
     }
+
+    public void deleteCategory(Long id) throws IllegalAccessException {
+        if (id != null) {
+            categoryRepository.deleteById(id);
+        } else {
+            throw new IllegalAccessException("Input data is null");
+        }
+    }
 }
