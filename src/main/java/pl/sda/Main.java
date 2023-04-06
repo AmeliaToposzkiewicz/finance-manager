@@ -2,6 +2,7 @@ package pl.sda;
 
 import pl.sda.dto.SimpleCategoryDto;
 import pl.sda.dto.SimpleIncomeDto;
+import pl.sda.dto.SimpleOutcomeDto;
 import pl.sda.repository.CategoryRepository;
 import pl.sda.repository.IncomeRepository;
 import pl.sda.repository.OutcomeRepository;
@@ -53,6 +54,7 @@ public class Main {
                 System.out.println("5 - Find all incomes");
                 System.out.println("6 - Delete income");
                 System.out.println("7 - Add new outcome");
+                System.out.println("8 - Find all outcomes");
                 int selectedOperation = SCANNER.nextInt();
                 SCANNER.nextLine();
                 switch (selectedOperation) {
@@ -139,6 +141,11 @@ public class Main {
                         } catch (IllegalAccessException e) {
                             throw new RuntimeException(e);
                         }
+                    }
+                    case 8 -> {
+                        System.out.println("ALl outcomes: ");
+                        List<SimpleOutcomeDto> findAllOutcomesList = outcomeService.findAllOutcomes();
+                        findAllOutcomesList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
                     }
 
                 }

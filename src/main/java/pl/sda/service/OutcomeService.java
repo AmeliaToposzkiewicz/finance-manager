@@ -1,11 +1,14 @@
 package pl.sda.service;
 
 import com.mysql.cj.util.StringUtils;
+import pl.sda.dto.SimpleOutcomeDto;
 import pl.sda.entity.Income;
 import pl.sda.entity.Outcome;
 import pl.sda.repository.OutcomeRepository;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 public class OutcomeService {
     private final OutcomeRepository outcomeRepository;
@@ -23,5 +26,13 @@ public class OutcomeService {
         } else {
             throw new IllegalAccessException("Some input data are null or empty");
         }
+    }
+
+    public List<SimpleOutcomeDto> findAllOutcomes() {
+        Set<Outcome> outcomes = outcomeRepository.findAll();
+        return outcomes.stream()
+                .map(outcome -> new SimpleOutcomeDto(outcome.getId(),
+                        outcome.getAmount() + ", " + outcome.getAddDate() + ", " + outcome.getComment(),
+                        outcome.getCategory().getId())).toList();
     }
 }
