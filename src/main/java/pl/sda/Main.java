@@ -1,5 +1,6 @@
 package pl.sda;
 
+import pl.sda.dto.SimpleIncomeDto;
 import pl.sda.repository.CategoryRepository;
 import pl.sda.repository.IncomeRepository;
 import pl.sda.service.CategoryService;
@@ -10,6 +11,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -42,6 +44,7 @@ public class Main {
                 System.out.println("1 - Add new category");
                 System.out.println("2 - Delete category");
                 System.out.println("3 - Add new income");
+                System.out.println("4 - Find all incomes");
                 int selectedOperation = SCANNER.nextInt();
                 SCANNER.nextLine();
                 switch (selectedOperation) {
@@ -86,6 +89,11 @@ public class Main {
                         } catch (IllegalAccessException e) {
                             throw new RuntimeException(e);
                         }
+                    }
+                    case 4 -> {
+                        System.out.println("ALl incomes: ");
+                        List<SimpleIncomeDto> findAllIncomesList = incomeService.findAllIncomes();
+                        findAllIncomesList.forEach(simpleIncomeDto -> System.out.println(simpleIncomeDto.toString()));
                     }
                 }
 

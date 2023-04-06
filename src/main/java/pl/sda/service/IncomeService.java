@@ -2,10 +2,13 @@ package pl.sda.service;
 
 import com.mysql.cj.util.StringUtils;
 import jakarta.persistence.Column;
+import pl.sda.dto.SimpleIncomeDto;
 import pl.sda.entity.Income;
 import pl.sda.repository.IncomeRepository;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 public class IncomeService {
     private final IncomeRepository incomeRepository;
@@ -21,6 +24,14 @@ public class IncomeService {
         } else {
             throw new IllegalAccessException("Some input data are null or empty");
         }
+    }
+
+    public List<SimpleIncomeDto> findAllIncomes() {
+        Set<Income> incomes = incomeRepository.findAll();
+        return incomes.stream()
+                .map(income -> new SimpleIncomeDto(income.getId(),
+                        income.getAmount() + ", " + income.getAddDate() + ", " + income.getComment()))
+                .toList();
     }
 
 }
