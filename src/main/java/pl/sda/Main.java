@@ -1,5 +1,6 @@
 package pl.sda;
 
+import pl.sda.dto.SimpleCategoryDto;
 import pl.sda.dto.SimpleIncomeDto;
 import pl.sda.repository.CategoryRepository;
 import pl.sda.repository.IncomeRepository;
@@ -75,6 +76,11 @@ public class Main {
                         } catch (IllegalAccessException e) {
                             System.err.println(e.getMessage());
                         }
+                    }
+                    case 3 -> {
+                        System.out.println("ALl categories: ");
+                        List<SimpleCategoryDto> findAllCategoriesList = categoryService.findAllCategories();
+                        findAllCategoriesList.forEach(simpleCategoryDto -> System.out.println(simpleCategoryDto.toString()));
                     }
                     case 4 -> {
                         System.out.println("Type amount");

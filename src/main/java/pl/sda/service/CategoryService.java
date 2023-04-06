@@ -1,8 +1,12 @@
 package pl.sda.service;
 
 import com.mysql.cj.util.StringUtils;
+import pl.sda.dto.SimpleCategoryDto;
 import pl.sda.entity.Category;
 import pl.sda.repository.CategoryRepository;
+
+import java.util.List;
+import java.util.Set;
 
 public class CategoryService {
     private final CategoryRepository categoryRepository;
@@ -20,17 +24,24 @@ public class CategoryService {
         }
     }
 
-    public void deleteCategory(Long id) throws IllegalAccessException {
-        if (id != null) {
-            categoryRepository.deleteById(id);
-        } else {
-            throw new IllegalAccessException("Input data is null");
-        }
+    public List<SimpleCategoryDto> findAllCategories() {
+        Set<Category> categories = categoryRepository.findAll();
+        return categories.stream()
+                .map(category -> new SimpleCategoryDto(category.getId(), category.getName()))
+                .toList();
     }
 
     public Category findCategoryById(Long id) throws IllegalAccessException {
         if (id != null) {
             return categoryRepository.findById(id);
+        } else {
+            throw new IllegalAccessException("Input data is null");
+        }
+    }
+
+    public void deleteCategory(Long id) throws IllegalAccessException {
+        if (id != null) {
+            categoryRepository.deleteById(id);
         } else {
             throw new IllegalAccessException("Input data is null");
         }
