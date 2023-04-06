@@ -1,7 +1,6 @@
 package pl.sda.service;
 
 import com.mysql.cj.util.StringUtils;
-import jakarta.persistence.Column;
 import pl.sda.dto.SimpleIncomeDto;
 import pl.sda.entity.Income;
 import pl.sda.repository.IncomeRepository;
@@ -32,6 +31,14 @@ public class IncomeService {
                 .map(income -> new SimpleIncomeDto(income.getId(),
                         income.getAmount() + ", " + income.getAddDate() + ", " + income.getComment()))
                 .toList();
+    }
+
+    public void deleteIncome(Long id) throws IllegalAccessException {
+        if (id != null) {
+            incomeRepository.deleteById(id);
+        } else {
+            throw new IllegalAccessException("Input data is null");
+        }
     }
 
 }

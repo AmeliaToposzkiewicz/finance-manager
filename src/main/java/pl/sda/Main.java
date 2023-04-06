@@ -45,6 +45,7 @@ public class Main {
                 System.out.println("2 - Delete category");
                 System.out.println("3 - Add new income");
                 System.out.println("4 - Find all incomes");
+                System.out.println("5 - Delete income");
                 int selectedOperation = SCANNER.nextInt();
                 SCANNER.nextLine();
                 switch (selectedOperation) {
@@ -94,6 +95,15 @@ public class Main {
                         System.out.println("ALl incomes: ");
                         List<SimpleIncomeDto> findAllIncomesList = incomeService.findAllIncomes();
                         findAllIncomesList.forEach(simpleIncomeDto -> System.out.println(simpleIncomeDto.toString()));
+                    }
+                    case 5 -> {
+                        System.out.println("Provide id of income to delete");
+                        Long incomeId = SCANNER.nextLong();
+                        try {
+                            incomeService.deleteIncome(incomeId);
+                        } catch (IllegalAccessException e) {
+                            System.err.println(e.getMessage());
+                        }
                     }
                 }
 
