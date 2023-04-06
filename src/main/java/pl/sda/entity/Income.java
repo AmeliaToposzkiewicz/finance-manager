@@ -24,4 +24,9 @@ public class Income {
 
     private String comment;
 
+    public Income(Long amount, LocalDate addDate, String comment) {
+        this.amount = amount;
+        this.addDate = addDate;
+        this.comment = comment;
+    }
 }

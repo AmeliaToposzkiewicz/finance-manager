@@ -1,13 +1,15 @@
 package pl.sda;
 
-import pl.sda.DbInitializer;
 import pl.sda.repository.CategoryRepository;
+import pl.sda.repository.IncomeRepository;
 import pl.sda.service.CategoryService;
+import pl.sda.service.IncomeService;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Main {
@@ -31,12 +33,15 @@ public class Main {
 
             final CategoryRepository categoryRepository = new CategoryRepository();
             final CategoryService categoryService = new CategoryService(categoryRepository);
+            final IncomeRepository incomeRepository = new IncomeRepository();
+            final IncomeService incomeService = new IncomeService(incomeRepository);
 
             while (true) {
                 System.out.println("Type operation");
                 System.out.println("0 - Exit program");
                 System.out.println("1 - Add new category");
                 System.out.println("2 - Delete category");
+                System.out.println("3 - Add new income");
                 int selectedOperation = SCANNER.nextInt();
                 SCANNER.nextLine();
                 switch (selectedOperation) {
@@ -45,20 +50,41 @@ public class Main {
                     }
                     case 1 -> {
                         System.out.println("Type name");
-                        String name = SCANNER.nextLine();
+                        String categoryName = SCANNER.nextLine();
                         try {
-                            categoryService.addCategory(name);
+                            categoryService.addCategory(categoryName);
                         } catch (IllegalAccessException e) {
                             System.err.println(e.getMessage());
                         }
                     }
                     case 2 -> {
                         System.out.println("Provide id of category to delete");
-                        Long id = SCANNER.nextLong();
+                        Long categoryId = SCANNER.nextLong();
                         try {
-                            categoryService.deleteCategory(id);
+                            categoryService.deleteCategory(categoryId);
                         } catch (IllegalAccessException e) {
                             System.err.println(e.getMessage());
+                        }
+                    }
+                    case 3 -> {
+                        System.out.println("Type amount");
+                        Long incomeAmount = SCANNER.nextLong();
+                        System.out.println("Type day");
+                        int incomeDay = SCANNER.nextInt();
+                        System.out.println("Type month");
+                        int incomeMonth = SCANNER.nextInt();
+                        System.out.println("Type year");
+                        int incomeYear = SCANNER.nextInt();
+                        SCANNER.nextLine();
+                        System.out.println("Type comment");
+                        String incomeComment = SCANNER.nextLine();
+
+                        LocalDate incomeDate = LocalDate.of(incomeYear, incomeMonth, incomeDay);
+
+                        try {
+                            incomeService.addIncome(incomeAmount, incomeDate, incomeComment);
+                        } catch (IllegalAccessException e) {
+                            throw new RuntimeException(e);
                         }
                     }
                 }
