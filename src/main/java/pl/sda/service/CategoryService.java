@@ -27,4 +27,12 @@ public class CategoryService {
             throw new IllegalAccessException("Input data is null");
         }
     }
+
+    public Category findCategoryById(Long id) throws IllegalAccessException {
+        if (id != null) {
+            return categoryRepository.findById(id);
+        } else {
+            throw new IllegalAccessException("Input data is null");
+        }
+    }
 }

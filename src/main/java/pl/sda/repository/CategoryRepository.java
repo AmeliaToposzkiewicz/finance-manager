@@ -24,4 +24,9 @@ public class CategoryRepository {
         entityManager.getTransaction().commit();
         entityManager.close();
     }
+
+    public Category findById(Long id) {
+        EntityManager entityManager = DbConnection.getEntityManager();
+        return entityManager.find(Category.class, id);
+    }
 }

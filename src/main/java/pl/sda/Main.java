@@ -3,8 +3,10 @@ package pl.sda;
 import pl.sda.dto.SimpleIncomeDto;
 import pl.sda.repository.CategoryRepository;
 import pl.sda.repository.IncomeRepository;
+import pl.sda.repository.OutcomeRepository;
 import pl.sda.service.CategoryService;
 import pl.sda.service.IncomeService;
+import pl.sda.service.OutcomeService;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -37,15 +39,19 @@ public class Main {
             final CategoryService categoryService = new CategoryService(categoryRepository);
             final IncomeRepository incomeRepository = new IncomeRepository();
             final IncomeService incomeService = new IncomeService(incomeRepository);
+            final OutcomeRepository outcomeRepository = new OutcomeRepository();
+            final OutcomeService outcomeService = new OutcomeService(outcomeRepository, categoryService);
 
             while (true) {
                 System.out.println("Type operation");
                 System.out.println("0 - Exit program");
                 System.out.println("1 - Add new category");
                 System.out.println("2 - Delete category");
-                System.out.println("3 - Add new income");
-                System.out.println("4 - Find all incomes");
-                System.out.println("5 - Delete income");
+                System.out.println("3 - Find all categories");
+                System.out.println("4 - Add new income");
+                System.out.println("5 - Find all incomes");
+                System.out.println("6 - Delete income");
+                System.out.println("7 - Add new outcome");
                 int selectedOperation = SCANNER.nextInt();
                 SCANNER.nextLine();
                 switch (selectedOperation) {
@@ -70,7 +76,7 @@ public class Main {
                             System.err.println(e.getMessage());
                         }
                     }
-                    case 3 -> {
+                    case 4 -> {
                         System.out.println("Type amount");
                         Long incomeAmount = SCANNER.nextLong();
                         System.out.println("Type day");
@@ -91,12 +97,12 @@ public class Main {
                             throw new RuntimeException(e);
                         }
                     }
-                    case 4 -> {
+                    case 5 -> {
                         System.out.println("ALl incomes: ");
                         List<SimpleIncomeDto> findAllIncomesList = incomeService.findAllIncomes();
                         findAllIncomesList.forEach(simpleIncomeDto -> System.out.println(simpleIncomeDto.toString()));
                     }
-                    case 5 -> {
+                    case 6 -> {
                         System.out.println("Provide id of income to delete");
                         Long incomeId = SCANNER.nextLong();
                         try {
@@ -105,8 +111,31 @@ public class Main {
                             System.err.println(e.getMessage());
                         }
                     }
-                }
+                    case 7 -> {
+                        System.out.println("Type amount");
+                        Long outcomeAmount = SCANNER.nextLong();
+                        System.out.println("Type day");
+                        int outcomeDay = SCANNER.nextInt();
+                        System.out.println("Type month");
+                        int outcomeMonth = SCANNER.nextInt();
+                        System.out.println("Type year");
+                        int outcomeYear = SCANNER.nextInt();
+                        SCANNER.nextLine();
+                        System.out.println("Type comment");
+                        String outcomeComment = SCANNER.nextLine();
+                        System.out.println("Provide id of category");
+                        Long categoryId = SCANNER.nextLong();
 
+                        LocalDate outcomeDate = LocalDate.of(outcomeYear, outcomeMonth, outcomeDay);
+
+                        try {
+                            outcomeService.addOutcome(outcomeAmount, outcomeDate, outcomeComment, categoryId);
+                        } catch (IllegalAccessException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+                }
             }
         }
     }

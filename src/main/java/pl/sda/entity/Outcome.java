@@ -29,4 +29,10 @@ public class Outcome {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    public Outcome(Long amount, LocalDate addDate, String comment, Category category) {
+        this.amount = amount;
+        this.addDate = addDate;
+        this.comment = comment;
+        this.category = category;
+    }
 }
