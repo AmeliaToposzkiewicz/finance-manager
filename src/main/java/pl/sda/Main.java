@@ -59,6 +59,7 @@ public class Main {
                 System.out.println("10 - Find all outcomes and incomes");
                 System.out.println("11 - Find outcomes by date");
                 System.out.println("12 - Find outcomes by category");
+                System.out.println("13 - Check balance");
                 int selectedOperation = SCANNER.nextInt();
                 SCANNER.nextLine();
                 switch (selectedOperation) {
@@ -198,6 +199,13 @@ public class Main {
                         List<SimpleOutcomeDto> findOutcomesByCategoryList = outcomeService.findByCategory(categoryId);
                         System.out.println("Outcomes in category " + categoryService.findCategoryById(categoryId).getName() + ": ");
                         findOutcomesByCategoryList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
+                    }
+                    case 13 -> {
+                        Long totalIncomes = incomeService.totalSumOfIncomes();
+                        Long totalOutcomes = outcomeService.totalSumOfOutcomes();
+                        long balance = totalIncomes - totalOutcomes;
+                        System.out.println("Incomes: " + totalIncomes+ " Outcomes: " + totalOutcomes + "\nBalance: " + balance);
+
                     }
                 }
             }

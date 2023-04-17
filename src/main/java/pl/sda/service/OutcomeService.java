@@ -2,7 +2,6 @@ package pl.sda.service;
 
 import com.mysql.cj.util.StringUtils;
 import pl.sda.dto.SimpleOutcomeDto;
-import pl.sda.entity.Income;
 import pl.sda.entity.Outcome;
 import pl.sda.repository.OutcomeRepository;
 
@@ -58,5 +57,9 @@ public class OutcomeService {
         } else {
             throw new IllegalAccessException("Input data is null");
         }
+    }
+
+    public Long totalSumOfOutcomes() {
+        return outcomeRepository.totalSum();
     }
 }

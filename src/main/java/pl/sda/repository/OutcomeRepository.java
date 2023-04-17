@@ -55,4 +55,11 @@ public class OutcomeRepository {
         entityManager.getTransaction().commit();
         entityManager.close();
     }
+
+    public Long totalSum() {
+        EntityManager entityManager = DbConnection.getEntityManager();
+        Long result = entityManager.createQuery("select sum(amount) from Outcome", Long.class).getSingleResult();
+        entityManager.close();
+        return result;
+    }
 }

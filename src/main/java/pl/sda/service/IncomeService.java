@@ -41,4 +41,8 @@ public class IncomeService {
         }
     }
 
+    public Long totalSumOfIncomes() {
+        return incomeRepository.totalSum();
+    }
 }
+

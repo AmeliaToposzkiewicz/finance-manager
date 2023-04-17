@@ -33,4 +33,11 @@ public class IncomeRepository {
         entityManager.getTransaction().commit();
         entityManager.close();
     }
+
+    public Long totalSum() {
+        EntityManager entityManager = DbConnection.getEntityManager();
+        Long result = entityManager.createQuery("select sum(amount) from Income", Long.class).getSingleResult();
+        entityManager.close();
+        return result;
+    }
 }
