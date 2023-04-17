@@ -25,7 +25,6 @@ public class Outcome {
 
     private String comment;
     @ManyToOne
-
     @JoinColumn(name = "category_id")
     private Category category;
 

@@ -30,7 +30,7 @@ public class Main {
 
     private static final Scanner SCANNER = new Scanner(System.in);
 
-    public static void main(String[] args) throws SQLException, IOException {
+    public static void main(String[] args) throws SQLException, IOException, IllegalAccessException {
         try (final Connection connection = DriverManager.getConnection(JDBC_URL + System.getenv(DB_NAME_ENV),
                 System.getenv(DB_USER_ENV), System.getenv(DB_PASSWORD_ENV))) {
 
@@ -58,6 +58,7 @@ public class Main {
                 System.out.println("9 - Delete outcome");
                 System.out.println("10 - Find all outcomes and incomes");
                 System.out.println("11 - Find outcomes by date");
+                System.out.println("12 - Find outcomes by category");
                 int selectedOperation = SCANNER.nextInt();
                 SCANNER.nextLine();
                 switch (selectedOperation) {
@@ -83,8 +84,8 @@ public class Main {
                         }
                     }
                     case 3 -> {
-                        System.out.println("ALl categories: ");
                         List<SimpleCategoryDto> findAllCategoriesList = categoryService.findAllCategories();
+                        System.out.println("ALl categories: ");
                         findAllCategoriesList.forEach(simpleCategoryDto -> System.out.println(simpleCategoryDto.toString()));
                     }
                     case 4 -> {
@@ -109,8 +110,8 @@ public class Main {
                         }
                     }
                     case 5 -> {
-                        System.out.println("ALl incomes: ");
                         List<SimpleIncomeDto> findAllIncomesList = incomeService.findAllIncomes();
+                        System.out.println("ALl incomes: ");
                         findAllIncomesList.forEach(simpleIncomeDto -> System.out.println(simpleIncomeDto.toString()));
                     }
                     case 6 -> {
@@ -146,8 +147,8 @@ public class Main {
                         }
                     }
                     case 8 -> {
-                        System.out.println("ALl outcomes: ");
                         List<SimpleOutcomeDto> findAllOutcomesList = outcomeService.findAllOutcomes();
+                        System.out.println("ALl outcomes: ");
                         findAllOutcomesList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
                     }
                     case 9 -> {
@@ -186,10 +187,17 @@ public class Main {
                         int toYear = SCANNER.nextInt();
                         LocalDate toDate = LocalDate.of(toYear, toMonth, toDay);
 
-                        System.out.println("Result: ");
                         List<SimpleOutcomeDto> findOutcomesByDateList = outcomeService.findByDate(fromDate, toDate);
+                        System.out.println("Outcomes between " + fromDate + " and " + toDate);
                         findOutcomesByDateList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
 
+                    }
+                    case 12 -> {
+                        System.out.println("Provide id of category");
+                        Long categoryId = SCANNER.nextLong();
+                        List<SimpleOutcomeDto> findOutcomesByCategoryList = outcomeService.findByCategory(categoryId);
+                        System.out.println("Outcomes in category " + categoryService.findCategoryById(categoryId).getName() + ": ");
+                        findOutcomesByCategoryList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
                     }
                 }
             }

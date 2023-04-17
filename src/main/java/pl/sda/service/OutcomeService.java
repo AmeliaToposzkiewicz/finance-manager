@@ -44,6 +44,14 @@ public class OutcomeService {
                         outcome.getCategory().getId())).toList();
     }
 
+    public List<SimpleOutcomeDto> findByCategory(Long categoryId) {
+        Set<Outcome> outcomes = outcomeRepository.findByCategory(categoryId);
+        return outcomes.stream()
+                .map(outcome -> new SimpleOutcomeDto(outcome.getId(),
+                        outcome.getAmount() + ", " + outcome.getAddDate() + ", " + outcome.getComment(),
+                        outcome.getCategory().getId())).toList();
+    }
+
     public void deleteOutcome(Long id) throws IllegalAccessException {
         if (id != null) {
             outcomeRepository.deleteById(id);

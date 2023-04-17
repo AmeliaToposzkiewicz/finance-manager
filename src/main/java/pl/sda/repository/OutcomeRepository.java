@@ -2,6 +2,7 @@ package pl.sda.repository;
 
 import jakarta.persistence.EntityManager;
 import pl.sda.DbConnection;
+import pl.sda.entity.Category;
 import pl.sda.entity.Outcome;
 
 import java.time.LocalDate;
@@ -31,6 +32,16 @@ public class OutcomeRepository {
         List<Outcome> outcomes = entityManager.createQuery("from Outcome where addDate between :fromDate and :toDate", Outcome.class)
                 .setParameter("fromDate", fromDate)
                 .setParameter("toDate", toDate)
+                .getResultList();
+        entityManager.close();
+        return new HashSet<>(outcomes);
+    }
+
+    public Set<Outcome> findByCategory(Long categoryId) {
+        EntityManager entityManager = DbConnection.getEntityManager();
+        Category category = entityManager.find(Category.class, categoryId);
+        List<Outcome> outcomes = entityManager.createQuery("from Outcome where category = :category", Outcome.class)
+                .setParameter("category", category)
                 .getResultList();
         entityManager.close();
         return new HashSet<>(outcomes);
