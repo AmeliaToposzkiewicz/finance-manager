@@ -36,6 +36,14 @@ public class OutcomeService {
                         outcome.getCategory().getId())).toList();
     }
 
+    public List<SimpleOutcomeDto> findByDate(LocalDate fromDate, LocalDate toDate) {
+        Set<Outcome> outcomes = outcomeRepository.findByDate(fromDate, toDate);
+        return outcomes.stream()
+                .map(outcome -> new SimpleOutcomeDto(outcome.getId(),
+                        outcome.getAmount() + ", " + outcome.getAddDate() + ", " + outcome.getComment(),
+                        outcome.getCategory().getId())).toList();
+    }
+
     public void deleteOutcome(Long id) throws IllegalAccessException {
         if (id != null) {
             outcomeRepository.deleteById(id);

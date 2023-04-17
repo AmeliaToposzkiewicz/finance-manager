@@ -56,6 +56,8 @@ public class Main {
                 System.out.println("7 - Add new outcome");
                 System.out.println("8 - Find all outcomes");
                 System.out.println("9 - Delete outcome");
+                System.out.println("10 - Find all outcomes and incomes");
+                System.out.println("11 - Find outcomes by date");
                 int selectedOperation = SCANNER.nextInt();
                 SCANNER.nextLine();
                 switch (selectedOperation) {
@@ -156,6 +158,38 @@ public class Main {
                         } catch (IllegalAccessException e) {
                             System.err.println(e.getMessage());
                         }
+                    }
+                    case 10 -> {
+                        List<SimpleOutcomeDto> findAllOutcomesList = outcomeService.findAllOutcomes();
+                        List<SimpleIncomeDto> findAllIncomesList = incomeService.findAllIncomes();
+                        System.out.println("ALl outcomes: ");
+                        findAllOutcomesList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
+                        System.out.println("ALl incomes: ");
+                        findAllIncomesList.forEach(simpleIncomeDto -> System.out.println(simpleIncomeDto.toString()));
+                    }
+                    case 11 -> {
+                        System.out.println("Provide first date");
+                        System.out.println("Type day");
+                        int fromDay = SCANNER.nextInt();
+                        System.out.println("Type month");
+                        int fromMonth = SCANNER.nextInt();
+                        System.out.println("Type year");
+                        int fromYear = SCANNER.nextInt();
+                        LocalDate fromDate = LocalDate.of(fromYear, fromMonth, fromDay);
+
+                        System.out.println("Provide second date");
+                        System.out.println("Type day");
+                        int toDay = SCANNER.nextInt();
+                        System.out.println("Type month");
+                        int toMonth = SCANNER.nextInt();
+                        System.out.println("Type year");
+                        int toYear = SCANNER.nextInt();
+                        LocalDate toDate = LocalDate.of(toYear, toMonth, toDay);
+
+                        System.out.println("Result: ");
+                        List<SimpleOutcomeDto> findOutcomesByDateList = outcomeService.findByDate(fromDate, toDate);
+                        findOutcomesByDateList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
+
                     }
                 }
             }

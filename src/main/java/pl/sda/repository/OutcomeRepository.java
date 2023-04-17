@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import pl.sda.DbConnection;
 import pl.sda.entity.Outcome;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +22,16 @@ public class OutcomeRepository {
     public Set<Outcome> findAll() {
         EntityManager entityManager = DbConnection.getEntityManager();
         List<Outcome> outcomes = entityManager.createQuery("from Outcome", Outcome.class).getResultList();
+        entityManager.close();
+        return new HashSet<>(outcomes);
+    }
+
+    public Set<Outcome> findByDate(LocalDate fromDate, LocalDate toDate) {
+        EntityManager entityManager = DbConnection.getEntityManager();
+        List<Outcome> outcomes = entityManager.createQuery("from Outcome where addDate between :fromDate and :toDate", Outcome.class)
+                .setParameter("fromDate", fromDate)
+                .setParameter("toDate", toDate)
+                .getResultList();
         entityManager.close();
         return new HashSet<>(outcomes);
     }
