@@ -45,22 +45,7 @@ public class Main {
             final OutcomeService outcomeService = new OutcomeService(outcomeRepository, categoryService);
 
             while (true) {
-                System.out.println("Type operation");
-                System.out.println("0 - Exit program");
-                System.out.println("1 - Add new category");
-                System.out.println("2 - Delete category");
-                System.out.println("3 - Find all categories");
-                System.out.println("4 - Add new income");
-                System.out.println("5 - Find all incomes");
-                System.out.println("6 - Delete income");
-                System.out.println("7 - Add new outcome");
-                System.out.println("8 - Find all outcomes");
-                System.out.println("9 - Delete outcome");
-                System.out.println("10 - Find all outcomes and incomes");
-                System.out.println("11 - Find outcomes by date");
-                System.out.println("12 - Find outcomes by category");
-                System.out.println("13 - Check balance");
-                System.out.println(("14 - Group outcomes by categories"));
+                showMenu();
                 int selectedOperation = SCANNER.nextInt();
                 SCANNER.nextLine();
                 switch (selectedOperation) {
@@ -93,17 +78,10 @@ public class Main {
                     case 4 -> {
                         System.out.println("Type amount");
                         Long incomeAmount = SCANNER.nextLong();
-                        System.out.println("Type day");
-                        int incomeDay = SCANNER.nextInt();
-                        System.out.println("Type month");
-                        int incomeMonth = SCANNER.nextInt();
-                        System.out.println("Type year");
-                        int incomeYear = SCANNER.nextInt();
+                        LocalDate incomeDate = createDate();
                         SCANNER.nextLine();
                         System.out.println("Type comment");
                         String incomeComment = SCANNER.nextLine();
-
-                        LocalDate incomeDate = LocalDate.of(incomeYear, incomeMonth, incomeDay);
 
                         try {
                             incomeService.addIncome(incomeAmount, incomeDate, incomeComment);
@@ -128,19 +106,12 @@ public class Main {
                     case 7 -> {
                         System.out.println("Type amount");
                         Long outcomeAmount = SCANNER.nextLong();
-                        System.out.println("Type day");
-                        int outcomeDay = SCANNER.nextInt();
-                        System.out.println("Type month");
-                        int outcomeMonth = SCANNER.nextInt();
-                        System.out.println("Type year");
-                        int outcomeYear = SCANNER.nextInt();
+                        LocalDate outcomeDate = createDate();
                         SCANNER.nextLine();
                         System.out.println("Type comment");
                         String outcomeComment = SCANNER.nextLine();
                         System.out.println("Provide id of category");
                         Long categoryId = SCANNER.nextLong();
-
-                        LocalDate outcomeDate = LocalDate.of(outcomeYear, outcomeMonth, outcomeDay);
 
                         try {
                             outcomeService.addOutcome(outcomeAmount, outcomeDate, outcomeComment, categoryId);
@@ -163,6 +134,25 @@ public class Main {
                         }
                     }
                     case 10 -> {
+                        System.out.println("Provide first date");
+                        LocalDate fromDate = createDate();
+
+                        System.out.println("Provide second date");
+                        LocalDate toDate = createDate();
+
+                        List<SimpleOutcomeDto> findOutcomesByDateList = outcomeService.findByDate(fromDate, toDate);
+                        System.out.println("Outcomes between " + fromDate + " and " + toDate);
+                        findOutcomesByDateList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
+                    }
+                    case 11 -> {
+                        System.out.println("Provide id of category");
+                        Long categoryId = SCANNER.nextLong();
+                        List<SimpleOutcomeDto> findOutcomesByCategoryList = outcomeService.findByCategory(categoryId);
+                        System.out.println("Outcomes in category " + categoryService.findCategoryById(categoryId).getName() + ": ");
+                        findOutcomesByCategoryList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
+                    }
+                    case 12 -> outcomeService.groupOutcomesByCategories().forEach(System.out::println);
+                    case 13 -> {
                         List<SimpleOutcomeDto> findAllOutcomesList = outcomeService.findAllOutcomes();
                         List<SimpleIncomeDto> findAllIncomesList = incomeService.findAllIncomes();
                         System.out.println("ALl outcomes: ");
@@ -170,49 +160,49 @@ public class Main {
                         System.out.println("ALl incomes: ");
                         findAllIncomesList.forEach(simpleIncomeDto -> System.out.println(simpleIncomeDto.toString()));
                     }
-                    case 11 -> {
-                        System.out.println("Provide first date");
-                        System.out.println("Type day");
-                        int fromDay = SCANNER.nextInt();
-                        System.out.println("Type month");
-                        int fromMonth = SCANNER.nextInt();
-                        System.out.println("Type year");
-                        int fromYear = SCANNER.nextInt();
-                        LocalDate fromDate = LocalDate.of(fromYear, fromMonth, fromDay);
-
-                        System.out.println("Provide second date");
-                        System.out.println("Type day");
-                        int toDay = SCANNER.nextInt();
-                        System.out.println("Type month");
-                        int toMonth = SCANNER.nextInt();
-                        System.out.println("Type year");
-                        int toYear = SCANNER.nextInt();
-                        LocalDate toDate = LocalDate.of(toYear, toMonth, toDay);
-
-                        List<SimpleOutcomeDto> findOutcomesByDateList = outcomeService.findByDate(fromDate, toDate);
-                        System.out.println("Outcomes between " + fromDate + " and " + toDate);
-                        findOutcomesByDateList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
-
-                    }
-                    case 12 -> {
-                        System.out.println("Provide id of category");
-                        Long categoryId = SCANNER.nextLong();
-                        List<SimpleOutcomeDto> findOutcomesByCategoryList = outcomeService.findByCategory(categoryId);
-                        System.out.println("Outcomes in category " + categoryService.findCategoryById(categoryId).getName() + ": ");
-                        findOutcomesByCategoryList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
-                    }
-                    case 13 -> {
+                    case 14 -> {
                         Long totalIncomes = incomeService.totalSumOfIncomes();
                         Long totalOutcomes = outcomeService.totalSumOfOutcomes();
                         long balance = totalIncomes - totalOutcomes;
-                        System.out.println("Incomes: " + totalIncomes+ " Outcomes: " + totalOutcomes + "\nBalance: " + balance);
+                        System.out.println("Incomes: " + totalIncomes + " Outcomes: " + totalOutcomes + "\nBalance: " + balance);
 
                     }
-                    case 14 -> {
-                        outcomeService.groupOutcomesByCategories().forEach(System.out::println);
-                    }
+                    default -> System.err.println(selectedOperation + " is invalid option. Please try again!");
                 }
             }
         }
+    }
+
+    public static void showMenu() {
+        System.out.println("Type operation");
+        System.out.println("0  - Exit program");
+        System.out.println("============= CATEGORY =============");
+        System.out.println("1  - Add new category");
+        System.out.println("2  - Delete category");
+        System.out.println("3  - Find all categories");
+        System.out.println("============= INCOME ===============");
+        System.out.println("4  - Add new income");
+        System.out.println("5  - Find all incomes");
+        System.out.println("6  - Delete income");
+        System.out.println("============= OUTCOME ==============");
+        System.out.println("7  - Add new outcome");
+        System.out.println("8  - Find all outcomes");
+        System.out.println("9  - Delete outcome");
+        System.out.println("10 - Find outcomes by date");
+        System.out.println("11 - Find outcomes by category");
+        System.out.println("12 - Group outcomes by categories");
+        System.out.println("============= OTHER =================");
+        System.out.println("13 - Find all outcomes and incomes");
+        System.out.println("14 - Check balance");
+    }
+
+    public static LocalDate createDate() {
+        System.out.println("Type day");
+        int day = SCANNER.nextInt();
+        System.out.println("Type month");
+        int month = SCANNER.nextInt();
+        System.out.println("Type year");
+        int year = SCANNER.nextInt();
+        return LocalDate.of(year, month, day);
     }
 }

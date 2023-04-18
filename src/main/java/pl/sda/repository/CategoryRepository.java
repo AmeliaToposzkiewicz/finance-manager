@@ -1,8 +1,8 @@
 package pl.sda.repository;
 
+import jakarta.persistence.EntityManager;
 import pl.sda.DbConnection;
 import pl.sda.entity.Category;
-import jakarta.persistence.EntityManager;
 
 import java.util.HashSet;
 import java.util.List;

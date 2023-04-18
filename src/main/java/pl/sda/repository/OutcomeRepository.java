@@ -64,7 +64,7 @@ public class OutcomeRepository {
         return result;
     }
 
-    public List<Object[]> groupByCategory(){
+    public List<Object[]> groupByCategory() {
         EntityManager entityManager = DbConnection.getEntityManager();
         TypedQuery<Object[]> query = entityManager.createQuery(
                 "select sum(amount), count(id), category.id from Outcome group by category ", Object[].class);
