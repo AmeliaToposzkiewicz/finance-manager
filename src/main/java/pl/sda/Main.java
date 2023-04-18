@@ -51,44 +51,16 @@ public class Main {
                 switch (selectedOperation) {
                     case 0 -> System.exit(0);
                     case 1 -> createCategory(categoryService);
-                    case 2 -> {
-                        List<SimpleCategoryDto> findAllCategoriesList = categoryService.findAllCategories();
-                        System.out.println("ALl categories: ");
-                        findAllCategoriesList.forEach(simpleCategoryDto -> System.out.println(simpleCategoryDto.toString()));
-                    }
+                    case 2 -> readAllCategories(categoryService);
                     case 3 -> removeCategory(categoryService);
                     case 4 -> createIncome(incomeService);
-                    case 5 -> {
-                        List<SimpleIncomeDto> findAllIncomesList = incomeService.findAllIncomes();
-                        System.out.println("ALl incomes: ");
-                        findAllIncomesList.forEach(simpleIncomeDto -> System.out.println(simpleIncomeDto.toString()));
-                    }
+                    case 5 -> readAllIncomes(incomeService);
                     case 6 -> removeIncome(incomeService);
                     case 7 -> createOutcome(outcomeService);
-                    case 8 -> {
-                        List<SimpleOutcomeDto> findAllOutcomesList = outcomeService.findAllOutcomes();
-                        System.out.println("ALl outcomes: ");
-                        findAllOutcomesList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
-                    }
+                    case 8 -> readAllOutcomes(outcomeService);
                     case 9 -> removeOutcome(outcomeService);
-                    case 10 -> {
-                        System.out.println("Provide first date");
-                        LocalDate fromDate = createDate();
-
-                        System.out.println("Provide second date");
-                        LocalDate toDate = createDate();
-
-                        List<SimpleOutcomeDto> findOutcomesByDateList = outcomeService.findByDate(fromDate, toDate);
-                        System.out.println("Outcomes between " + fromDate + " and " + toDate);
-                        findOutcomesByDateList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
-                    }
-                    case 11 -> {
-                        System.out.println("Provide id of category");
-                        Long categoryId = SCANNER.nextLong();
-                        List<SimpleOutcomeDto> findOutcomesByCategoryList = outcomeService.findByCategory(categoryId);
-                        System.out.println("Outcomes in category " + categoryService.findCategoryById(categoryId).getName() + ": ");
-                        findOutcomesByCategoryList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
-                    }
+                    case 10 -> readOutcomesBetweenDates(outcomeService);
+                    case 11 -> readOutcomesByCategory(categoryService, outcomeService);
                     case 12 -> outcomeService.groupOutcomesByCategories().forEach(System.out::println);
                     case 13 -> {
                         List<SimpleOutcomeDto> findAllOutcomesList = outcomeService.findAllOutcomes();
@@ -98,13 +70,7 @@ public class Main {
                         System.out.println("ALl incomes: ");
                         findAllIncomesList.forEach(simpleIncomeDto -> System.out.println(simpleIncomeDto.toString()));
                     }
-                    case 14 -> {
-                        Long totalIncomes = incomeService.totalSumOfIncomes();
-                        Long totalOutcomes = outcomeService.totalSumOfOutcomes();
-                        long balance = totalIncomes - totalOutcomes;
-                        System.out.println("Incomes: " + totalIncomes + " Outcomes: " + totalOutcomes + "\nBalance: " + balance);
-
-                    }
+                    case 14 -> readBalance(incomeService, outcomeService);
                     default -> System.err.println(selectedOperation + " is invalid option. Please try again!");
                 }
             }
@@ -164,7 +130,7 @@ public class Main {
         try {
             incomeService.addIncome(incomeAmount, incomeDate, incomeComment);
         } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
     }
 
@@ -180,7 +146,7 @@ public class Main {
         try {
             outcomeService.addOutcome(outcomeAmount, outcomeDate, outcomeComment, categoryId);
         } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
     }
 
@@ -212,5 +178,52 @@ public class Main {
         } catch (IllegalAccessException e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    public static void readAllCategories(CategoryService categoryService) {
+        List<SimpleCategoryDto> findAllCategoriesList = categoryService.findAllCategories();
+        System.out.println("ALl categories: ");
+        findAllCategoriesList.forEach(simpleCategoryDto -> System.out.println(simpleCategoryDto.toString()));
+    }
+
+    public static void readAllIncomes(IncomeService incomeService) {
+        List<SimpleIncomeDto> findAllIncomesList = incomeService.findAllIncomes();
+        System.out.println("ALl incomes: ");
+        findAllIncomesList.forEach(simpleIncomeDto -> System.out.println(simpleIncomeDto.toString()));
+    }
+
+    public static void readAllOutcomes(OutcomeService outcomeService) {
+        List<SimpleOutcomeDto> findAllOutcomesList = outcomeService.findAllOutcomes();
+        System.out.println("ALl outcomes: ");
+        findAllOutcomesList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
+    }
+
+    public static void readOutcomesBetweenDates(OutcomeService outcomeService) {
+        System.out.println("Provide first date");
+        LocalDate fromDate = createDate();
+        System.out.println("Provide second date");
+        LocalDate toDate = createDate();
+        List<SimpleOutcomeDto> findOutcomesByDateList = outcomeService.findByDate(fromDate, toDate);
+        System.out.println("Outcomes between " + fromDate + " and " + toDate);
+        findOutcomesByDateList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
+    }
+
+    public static void readOutcomesByCategory(CategoryService categoryService, OutcomeService outcomeService) {
+        System.out.println("Provide id of category");
+        Long categoryId = SCANNER.nextLong();
+        List<SimpleOutcomeDto> findOutcomesByCategoryList = outcomeService.findByCategory(categoryId);
+        try {
+            System.out.println("Outcomes in category " + categoryService.findCategoryById(categoryId).getName() + ": ");
+            findOutcomesByCategoryList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
+        } catch (IllegalAccessException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public static void readBalance(IncomeService incomeService, OutcomeService outcomeService) {
+        Long totalIncomes = incomeService.totalSumOfIncomes();
+        Long totalOutcomes = outcomeService.totalSumOfOutcomes();
+        long balance = totalIncomes - totalOutcomes;
+        System.out.println("Incomes: " + totalIncomes + " Outcomes: " + totalOutcomes + "\nBalance: " + balance);
     }
 }
