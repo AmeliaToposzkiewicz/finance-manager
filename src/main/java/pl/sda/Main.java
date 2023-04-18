@@ -60,6 +60,7 @@ public class Main {
                 System.out.println("11 - Find outcomes by date");
                 System.out.println("12 - Find outcomes by category");
                 System.out.println("13 - Check balance");
+                System.out.println(("14 - Group outcomes by categories"));
                 int selectedOperation = SCANNER.nextInt();
                 SCANNER.nextLine();
                 switch (selectedOperation) {
@@ -206,6 +207,9 @@ public class Main {
                         long balance = totalIncomes - totalOutcomes;
                         System.out.println("Incomes: " + totalIncomes+ " Outcomes: " + totalOutcomes + "\nBalance: " + balance);
 
+                    }
+                    case 14 -> {
+                        outcomeService.groupOutcomesByCategories().forEach(System.out::println);
                     }
                 }
             }

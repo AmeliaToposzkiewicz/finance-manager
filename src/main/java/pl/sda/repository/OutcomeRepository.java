@@ -1,6 +1,7 @@
 package pl.sda.repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import pl.sda.DbConnection;
 import pl.sda.entity.Category;
 import pl.sda.entity.Outcome;
@@ -59,6 +60,15 @@ public class OutcomeRepository {
     public Long totalSum() {
         EntityManager entityManager = DbConnection.getEntityManager();
         Long result = entityManager.createQuery("select sum(amount) from Outcome", Long.class).getSingleResult();
+        entityManager.close();
+        return result;
+    }
+
+    public List<Object[]> groupByCategory(){
+        EntityManager entityManager = DbConnection.getEntityManager();
+        TypedQuery<Object[]> query = entityManager.createQuery(
+                "select sum(amount), count(id), category.id from Outcome group by category ", Object[].class);
+        List<Object[]> result = query.getResultList();
         entityManager.close();
         return result;
     }

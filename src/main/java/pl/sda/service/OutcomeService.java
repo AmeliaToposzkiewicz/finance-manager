@@ -7,7 +7,9 @@ import pl.sda.repository.OutcomeRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class OutcomeService {
     private final OutcomeRepository outcomeRepository;
@@ -62,4 +64,9 @@ public class OutcomeService {
     public Long totalSumOfOutcomes() {
         return outcomeRepository.totalSum();
     }
-}
+
+    public List<String> groupOutcomesByCategories() {
+        return outcomeRepository.groupByCategory().stream()
+                .map(objects -> "sum: " + objects[0] + " number of outcomes: " + objects[1] + " category id:" + objects[2]).toList();
+    }
+};
