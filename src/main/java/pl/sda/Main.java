@@ -49,18 +49,8 @@ public class Main {
                 int selectedOperation = SCANNER.nextInt();
                 SCANNER.nextLine();
                 switch (selectedOperation) {
-                    case 0 -> {
-                        System.exit(0);
-                    }
-                    case 1 -> {
-                        System.out.println("Type name");
-                        String categoryName = SCANNER.nextLine();
-                        try {
-                            categoryService.addCategory(categoryName);
-                        } catch (IllegalAccessException e) {
-                            System.err.println(e.getMessage());
-                        }
-                    }
+                    case 0 -> System.exit(0);
+                    case 1 -> createCategory(categoryService);
                     case 2 -> {
                         System.out.println("Provide id of category to delete");
                         Long categoryId = SCANNER.nextLong();
@@ -75,20 +65,7 @@ public class Main {
                         System.out.println("ALl categories: ");
                         findAllCategoriesList.forEach(simpleCategoryDto -> System.out.println(simpleCategoryDto.toString()));
                     }
-                    case 4 -> {
-                        System.out.println("Type amount");
-                        Long incomeAmount = SCANNER.nextLong();
-                        LocalDate incomeDate = createDate();
-                        SCANNER.nextLine();
-                        System.out.println("Type comment");
-                        String incomeComment = SCANNER.nextLine();
-
-                        try {
-                            incomeService.addIncome(incomeAmount, incomeDate, incomeComment);
-                        } catch (IllegalAccessException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
+                    case 4 -> createIncome(incomeService);
                     case 5 -> {
                         List<SimpleIncomeDto> findAllIncomesList = incomeService.findAllIncomes();
                         System.out.println("ALl incomes: ");
@@ -103,22 +80,7 @@ public class Main {
                             System.err.println(e.getMessage());
                         }
                     }
-                    case 7 -> {
-                        System.out.println("Type amount");
-                        Long outcomeAmount = SCANNER.nextLong();
-                        LocalDate outcomeDate = createDate();
-                        SCANNER.nextLine();
-                        System.out.println("Type comment");
-                        String outcomeComment = SCANNER.nextLine();
-                        System.out.println("Provide id of category");
-                        Long categoryId = SCANNER.nextLong();
-
-                        try {
-                            outcomeService.addOutcome(outcomeAmount, outcomeDate, outcomeComment, categoryId);
-                        } catch (IllegalAccessException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
+                    case 7 -> createOutcome(outcomeService);
                     case 8 -> {
                         List<SimpleOutcomeDto> findAllOutcomesList = outcomeService.findAllOutcomes();
                         System.out.println("ALl outcomes: ");
@@ -204,5 +166,45 @@ public class Main {
         System.out.println("Type year");
         int year = SCANNER.nextInt();
         return LocalDate.of(year, month, day);
+    }
+
+    public static void createCategory(CategoryService categoryService) {
+        System.out.println("Type name");
+        String categoryName = SCANNER.nextLine();
+        try {
+            categoryService.addCategory(categoryName);
+        } catch (IllegalAccessException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public static void createIncome(IncomeService incomeService) {
+        System.out.println("Type amount");
+        Long incomeAmount = SCANNER.nextLong();
+        LocalDate incomeDate = createDate();
+        SCANNER.nextLine();
+        System.out.println("Type comment");
+        String incomeComment = SCANNER.nextLine();
+        try {
+            incomeService.addIncome(incomeAmount, incomeDate, incomeComment);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void createOutcome(OutcomeService outcomeService) {
+        System.out.println("Type amount");
+        Long outcomeAmount = SCANNER.nextLong();
+        LocalDate outcomeDate = createDate();
+        SCANNER.nextLine();
+        System.out.println("Type comment");
+        String outcomeComment = SCANNER.nextLine();
+        System.out.println("Provide id of category");
+        Long categoryId = SCANNER.nextLong();
+        try {
+            outcomeService.addOutcome(outcomeAmount, outcomeDate, outcomeComment, categoryId);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
