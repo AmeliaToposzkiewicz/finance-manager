@@ -52,49 +52,25 @@ public class Main {
                     case 0 -> System.exit(0);
                     case 1 -> createCategory(categoryService);
                     case 2 -> {
-                        System.out.println("Provide id of category to delete");
-                        Long categoryId = SCANNER.nextLong();
-                        try {
-                            categoryService.deleteCategory(categoryId);
-                        } catch (IllegalAccessException e) {
-                            System.err.println(e.getMessage());
-                        }
-                    }
-                    case 3 -> {
                         List<SimpleCategoryDto> findAllCategoriesList = categoryService.findAllCategories();
                         System.out.println("ALl categories: ");
                         findAllCategoriesList.forEach(simpleCategoryDto -> System.out.println(simpleCategoryDto.toString()));
                     }
+                    case 3 -> removeCategory(categoryService);
                     case 4 -> createIncome(incomeService);
                     case 5 -> {
                         List<SimpleIncomeDto> findAllIncomesList = incomeService.findAllIncomes();
                         System.out.println("ALl incomes: ");
                         findAllIncomesList.forEach(simpleIncomeDto -> System.out.println(simpleIncomeDto.toString()));
                     }
-                    case 6 -> {
-                        System.out.println("Provide id of income to delete");
-                        Long incomeId = SCANNER.nextLong();
-                        try {
-                            incomeService.deleteIncome(incomeId);
-                        } catch (IllegalAccessException e) {
-                            System.err.println(e.getMessage());
-                        }
-                    }
+                    case 6 -> removeIncome(incomeService);
                     case 7 -> createOutcome(outcomeService);
                     case 8 -> {
                         List<SimpleOutcomeDto> findAllOutcomesList = outcomeService.findAllOutcomes();
                         System.out.println("ALl outcomes: ");
                         findAllOutcomesList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
                     }
-                    case 9 -> {
-                        System.out.println("Provide id of outcome to delete");
-                        Long outcomeId = SCANNER.nextLong();
-                        try {
-                            outcomeService.deleteOutcome(outcomeId);
-                        } catch (IllegalAccessException e) {
-                            System.err.println(e.getMessage());
-                        }
-                    }
+                    case 9 -> removeOutcome(outcomeService);
                     case 10 -> {
                         System.out.println("Provide first date");
                         LocalDate fromDate = createDate();
@@ -140,8 +116,8 @@ public class Main {
         System.out.println("0  - Exit program");
         System.out.println("============= CATEGORY =============");
         System.out.println("1  - Add new category");
-        System.out.println("2  - Delete category");
-        System.out.println("3  - Find all categories");
+        System.out.println("2  - Find all categories");
+        System.out.println("3  - Delete category");
         System.out.println("============= INCOME ===============");
         System.out.println("4  - Add new income");
         System.out.println("5  - Find all incomes");
@@ -205,6 +181,36 @@ public class Main {
             outcomeService.addOutcome(outcomeAmount, outcomeDate, outcomeComment, categoryId);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void removeCategory(CategoryService categoryService) {
+        System.out.println("Provide id of category to delete");
+        Long categoryId = SCANNER.nextLong();
+        try {
+            categoryService.deleteCategory(categoryId);
+        } catch (IllegalAccessException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public static void removeIncome(IncomeService incomeService) {
+        System.out.println("Provide id of income to delete");
+        Long incomeId = SCANNER.nextLong();
+        try {
+            incomeService.deleteIncome(incomeId);
+        } catch (IllegalAccessException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public static void removeOutcome(OutcomeService outcomeService) {
+        System.out.println("Provide id of outcome to delete");
+        Long outcomeId = SCANNER.nextLong();
+        try {
+            outcomeService.deleteOutcome(outcomeId);
+        } catch (IllegalAccessException e) {
+            System.err.println(e.getMessage());
         }
     }
 }
