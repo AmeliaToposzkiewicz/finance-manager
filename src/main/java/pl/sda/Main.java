@@ -62,14 +62,7 @@ public class Main {
                     case 10 -> readOutcomesBetweenDates(outcomeService);
                     case 11 -> readOutcomesByCategory(categoryService, outcomeService);
                     case 12 -> outcomeService.groupOutcomesByCategories().forEach(System.out::println);
-                    case 13 -> {
-                        List<SimpleOutcomeDto> findAllOutcomesList = outcomeService.findAllOutcomes();
-                        List<SimpleIncomeDto> findAllIncomesList = incomeService.findAllIncomes();
-                        System.out.println("ALl outcomes: ");
-                        findAllOutcomesList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
-                        System.out.println("ALl incomes: ");
-                        findAllIncomesList.forEach(simpleIncomeDto -> System.out.println(simpleIncomeDto.toString()));
-                    }
+                    case 13 -> readAllOutcomesAndIncomes(outcomeService, incomeService);
                     case 14 -> readBalance(incomeService, outcomeService);
                     default -> System.err.println(selectedOperation + " is invalid option. Please try again!");
                 }
@@ -225,5 +218,14 @@ public class Main {
         Long totalOutcomes = outcomeService.totalSumOfOutcomes();
         long balance = totalIncomes - totalOutcomes;
         System.out.println("Incomes: " + totalIncomes + " Outcomes: " + totalOutcomes + "\nBalance: " + balance);
+    }
+
+    public static void readAllOutcomesAndIncomes(OutcomeService outcomeService, IncomeService incomeService) {
+        List<SimpleOutcomeDto> findAllOutcomesList = outcomeService.findAllOutcomes();
+        List<SimpleIncomeDto> findAllIncomesList = incomeService.findAllIncomes();
+        System.out.println("ALl outcomes: ");
+        findAllOutcomesList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
+        System.out.println("ALl incomes: ");
+        findAllIncomesList.forEach(simpleIncomeDto -> System.out.println(simpleIncomeDto.toString()));
     }
 }
