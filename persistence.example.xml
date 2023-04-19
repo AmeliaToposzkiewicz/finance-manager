@@ -1,0 +1,39 @@
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
+
+    <persistence-unit name="sda-zdjavapol109">
+        <description>
+            Persistence unit for sda zdjavapol109 hibernate project
+        </description>
+
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <properties>
+            <property name="javax.persistence.jdbc.driver"
+                      value="com.mysql.cj.jdbc.Driver"/>
+
+            <!--replace url with url to your database-->
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:mysql://localhost:3306/dbName"/>
+
+            <!--replace dbUser with your db user-->
+            <property name="javax.persistence.jdbc.user"
+                      value="dbUser"/>
+
+            <!--replace dbPassword with password of specified user-->
+            <property name="javax.persistence.jdbc.password"
+                      value="dbPassword"/>
+
+            <property name="hibernate.show_sql"
+                      value="true"/>
+
+            <property name="hibernate.format_sql"
+                      value="true"/>
+        </properties>
+
+    </persistence-unit>
+
+</persistence>
