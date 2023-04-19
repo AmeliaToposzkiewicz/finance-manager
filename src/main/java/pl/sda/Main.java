@@ -70,7 +70,7 @@ public class Main {
         }
     }
 
-    public static void showMenu() {
+    private static void showMenu() {
         System.out.println("Type operation");
         System.out.println("0  - Exit program");
         System.out.println("============= CATEGORY =============");
@@ -93,7 +93,7 @@ public class Main {
         System.out.println("14 - Check balance");
     }
 
-    public static LocalDate createDate() {
+    private static LocalDate createDate() {
         System.out.println("Type day");
         int day = SCANNER.nextInt();
         System.out.println("Type month");
@@ -103,7 +103,7 @@ public class Main {
         return LocalDate.of(year, month, day);
     }
 
-    public static void createCategory(CategoryService categoryService) {
+    private static void createCategory(CategoryService categoryService) {
         System.out.println("Type name");
         String categoryName = SCANNER.nextLine();
         try {
@@ -113,7 +113,7 @@ public class Main {
         }
     }
 
-    public static void createIncome(IncomeService incomeService) {
+    private static void createIncome(IncomeService incomeService) {
         System.out.println("Type amount");
         Long incomeAmount = SCANNER.nextLong();
         LocalDate incomeDate = createDate();
@@ -127,7 +127,7 @@ public class Main {
         }
     }
 
-    public static void createOutcome(OutcomeService outcomeService) {
+    private static void createOutcome(OutcomeService outcomeService) {
         System.out.println("Type amount");
         Long outcomeAmount = SCANNER.nextLong();
         LocalDate outcomeDate = createDate();
@@ -143,7 +143,7 @@ public class Main {
         }
     }
 
-    public static void removeCategory(CategoryService categoryService) {
+    private static void removeCategory(CategoryService categoryService) {
         System.out.println("Provide id of category to delete");
         Long categoryId = SCANNER.nextLong();
         try {
@@ -153,7 +153,7 @@ public class Main {
         }
     }
 
-    public static void removeIncome(IncomeService incomeService) {
+    private static void removeIncome(IncomeService incomeService) {
         System.out.println("Provide id of income to delete");
         Long incomeId = SCANNER.nextLong();
         try {
@@ -163,7 +163,7 @@ public class Main {
         }
     }
 
-    public static void removeOutcome(OutcomeService outcomeService) {
+    private static void removeOutcome(OutcomeService outcomeService) {
         System.out.println("Provide id of outcome to delete");
         Long outcomeId = SCANNER.nextLong();
         try {
@@ -173,25 +173,25 @@ public class Main {
         }
     }
 
-    public static void readAllCategories(CategoryService categoryService) {
+    private static void readAllCategories(CategoryService categoryService) {
         List<SimpleCategoryDto> findAllCategoriesList = categoryService.findAllCategories();
         System.out.println("ALl categories: ");
         findAllCategoriesList.forEach(simpleCategoryDto -> System.out.println(simpleCategoryDto.toString()));
     }
 
-    public static void readAllIncomes(IncomeService incomeService) {
+    private static void readAllIncomes(IncomeService incomeService) {
         List<SimpleIncomeDto> findAllIncomesList = incomeService.findAllIncomes();
         System.out.println("ALl incomes: ");
         findAllIncomesList.forEach(simpleIncomeDto -> System.out.println(simpleIncomeDto.toString()));
     }
 
-    public static void readAllOutcomes(OutcomeService outcomeService) {
+    private static void readAllOutcomes(OutcomeService outcomeService) {
         List<SimpleOutcomeDto> findAllOutcomesList = outcomeService.findAllOutcomes();
         System.out.println("ALl outcomes: ");
         findAllOutcomesList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
     }
 
-    public static void readOutcomesBetweenDates(OutcomeService outcomeService) {
+    private static void readOutcomesBetweenDates(OutcomeService outcomeService) {
         System.out.println("Provide first date");
         LocalDate fromDate = createDate();
         System.out.println("Provide second date");
@@ -201,7 +201,7 @@ public class Main {
         findOutcomesByDateList.forEach(simpleOutcomeDto -> System.out.println(simpleOutcomeDto.toString()));
     }
 
-    public static void readOutcomesByCategory(CategoryService categoryService, OutcomeService outcomeService) {
+    private static void readOutcomesByCategory(CategoryService categoryService, OutcomeService outcomeService) {
         System.out.println("Provide id of category");
         Long categoryId = SCANNER.nextLong();
         List<SimpleOutcomeDto> findOutcomesByCategoryList = outcomeService.findByCategory(categoryId);
@@ -213,14 +213,20 @@ public class Main {
         }
     }
 
-    public static void readBalance(IncomeService incomeService, OutcomeService outcomeService) {
+    private static void readBalance(IncomeService incomeService, OutcomeService outcomeService) {
         Long totalIncomes = incomeService.totalSumOfIncomes();
+        if(totalIncomes == null){
+          totalIncomes = (long) 0;
+        }
         Long totalOutcomes = outcomeService.totalSumOfOutcomes();
+        if (totalOutcomes == null){
+            totalOutcomes = (long) 0;
+        }
         long balance = totalIncomes - totalOutcomes;
         System.out.println("Incomes: " + totalIncomes + " Outcomes: " + totalOutcomes + "\nBalance: " + balance);
     }
 
-    public static void readAllOutcomesAndIncomes(OutcomeService outcomeService, IncomeService incomeService) {
+    private static void readAllOutcomesAndIncomes(OutcomeService outcomeService, IncomeService incomeService) {
         List<SimpleOutcomeDto> findAllOutcomesList = outcomeService.findAllOutcomes();
         List<SimpleIncomeDto> findAllIncomesList = incomeService.findAllIncomes();
         System.out.println("ALl outcomes: ");
