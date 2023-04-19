@@ -94,13 +94,62 @@ public class Main {
     }
 
     private static LocalDate createDate() {
-        System.out.println("Type day");
-        int day = SCANNER.nextInt();
-        System.out.println("Type month");
-        int month = SCANNER.nextInt();
-        System.out.println("Type year");
-        int year = SCANNER.nextInt();
+        int day = 0;
+        int month = 0;
+        int year = 0;
+        boolean isDateCorrect = false;
+
+        System.out.println("Enter the date using numbers only");
+        while (!isDateCorrect) {
+            System.out.println("Type the day of the month");
+            day = SCANNER.nextInt();
+            System.out.println("Type the month");
+            month = SCANNER.nextInt();
+            System.out.println("Type the year");
+            year = SCANNER.nextInt();
+            isDateCorrect = checkDate(day, month, year);
+            if (!isDateCorrect){
+                System.out.println("Invalid date, please try again");
+            }
+        }
         return LocalDate.of(year, month, day);
+    }
+
+    private static boolean checkDate(int day, int month, int year) {
+        boolean isLeapYear = checkLeapYear(year);
+        boolean isDateCorrect = false;
+        List<Integer> monthsWith31Days = List.of(1, 3, 5, 7, 8, 10, 12);
+
+        if (month == 2) {
+            if (isLeapYear && day >= 1 && day <= 29) {
+                isDateCorrect = true;
+            } else if (!isLeapYear && day >= 1 && day <= 28) {
+                isDateCorrect = true;
+            }
+        } else if (monthsWith31Days.contains(month)) {
+            if (day >= 1 && day <= 31) {
+                isDateCorrect = true;
+            }
+        } else {
+            if (day >= 1 && day <= 30) {
+                isDateCorrect = true;
+            }
+        }
+        return isDateCorrect;
+    }
+
+    private static boolean checkLeapYear(int year) {
+        boolean isLeapYear = false;
+        if (year % 4 == 0) {
+            if (year % 100 == 0) {
+                if (year % 400 == 0) {
+                    isLeapYear = true;
+                }
+            } else {
+                isLeapYear = true;
+            }
+        }
+        return isLeapYear;
     }
 
     private static void createCategory(CategoryService categoryService) {
@@ -215,11 +264,11 @@ public class Main {
 
     private static void readBalance(IncomeService incomeService, OutcomeService outcomeService) {
         Long totalIncomes = incomeService.totalSumOfIncomes();
-        if(totalIncomes == null){
-          totalIncomes = (long) 0;
+        if (totalIncomes == null) {
+            totalIncomes = (long) 0;
         }
         Long totalOutcomes = outcomeService.totalSumOfOutcomes();
-        if (totalOutcomes == null){
+        if (totalOutcomes == null) {
             totalOutcomes = (long) 0;
         }
         long balance = totalIncomes - totalOutcomes;
